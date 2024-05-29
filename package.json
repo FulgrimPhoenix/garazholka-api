@@ -1,0 +1,31 @@
+{
+  "name": "garazholka-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "npx eslint",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FulgrimPhoenix/garazholka-api.git"
+  },
+  "author": "Ivanyushin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FulgrimPhoenix/garazholka-api/issues"
+  },
+  "homepage": "https://github.com/FulgrimPhoenix/garazholka-api#readme",
+  "devDependencies": {
+    "eslint": "^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.29.1",
+    "nodemon": "^3.1.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}
