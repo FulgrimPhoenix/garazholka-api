@@ -1,4 +1,4 @@
-const { UserAlreadyExists } = require("../errors/errors");
+const { UserAlreadyExists, NotFoundError } = require("../errors/errors");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
@@ -91,6 +91,18 @@ const signout = (req, res, next) => {
   }catch (err){
     next(err)
   }
+}
+
+const getMyUserInfo = (req, res, next) => {
+  const { _id } = req.user;
+
+  User.findById(_id).then(findedUser => {
+    if (!findedUser) {
+      throw new NotFoundError({message: constants.errorMassages.notFound})
+    }
+    return res.status(200).json(findedUser)
+  })
+  .catch(next)
 }
 
 module.exports = {
