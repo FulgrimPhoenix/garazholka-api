@@ -7,26 +7,26 @@ const userSchema = new mongoose.Schema({
   name: { type: String, minLength: 2, maxLength: 30, required: true },
   password: { type: String, required: true, select: false },
   groupId: { type: Number, required: true },
-  freeTime: [{ type: Data, required: true }],
-  preferredLocations: [{ type: String, required: true }],
-  preferredInterests: [{ type: String, required: true }],
+  freeTime: [{ type: String, required: true }],
+  preferedLocations: [{ type: String, required: true }],
+  preferedInterests: [{ type: String, required: true }],
 });
 
 userSchema.statics.findUserByCredentials = function (email, password) {
-  return this.findOne({ email }).then((user) => {
-    if (!user) {
-      return Promise.reject(new AuthError("Неверная почта или пароль"));
-    }
+  return this.findOne({ email })
+    .select("+password")
+    .then((user) => {
+      if (!user) {
+        return Promise.reject(new AuthError("Неверная почта или пароль"));
+      }
 
-    return bcrypt.compare(password, user.password)
-      .then((matched) => {
+      return bcrypt.compare(password, user.password).then((matched) => {
         if (!matched) {
           return Promise.reject(new AuthError("Неверная почта или пароль"));
         }
-
         return user;
       });
-  });
+    });
 };
 
 module.exports = mongoose.model("user", userSchema);

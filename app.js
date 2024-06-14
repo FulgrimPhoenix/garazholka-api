@@ -1,10 +1,16 @@
 const express = require("express");
+const bodyParser = require('body-parser');
 const mongoose = require("mongoose");
+const constants = require("./utils/constants");
+const { router } = require("./routes");
+
 const app = express();
 require("dotenv").config();
 
-const { PORT = 3000, URL = "mongodb://0.0.0.0:27017/garazholkadb" } =
-  process.env;
+const { PORT = 3000, URL = constants.URLs.dbUrl } = process.env;
+
+app.use(bodyParser.json()); // для собирания JSON-формата
+app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose
   .connect(URL)
@@ -14,3 +20,5 @@ mongoose
 app.listen(PORT, (err) =>
   err ? console.log(err) : console.log(`server listen ${PORT} PORT`)
 );
+
+app.use(router);
