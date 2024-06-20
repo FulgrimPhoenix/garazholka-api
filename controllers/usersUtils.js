@@ -85,28 +85,62 @@ const signin = (req, res, next) => {
 };
 
 const signout = (req, res, next) => {
-  try{
-    res.clearCookie('jwt')
-    res.status(200).json({message: constants.responseMasseges.signOut})
-  }catch (err){
-    next(err)
+  try {
+    res.clearCookie("jwt");
+    res.status(200).json({ message: constants.responseMasseges.signOut });
+  } catch (err) {
+    next(err);
   }
-}
+};
 
 const getMyUserInfo = (req, res, next) => {
   const { _id } = req.user;
 
-  User.findById(_id).then(findedUser => {
-    if (!findedUser) {
-      throw new NotFoundError({message: constants.errorMassages.notFound})
-    }
-    return res.status(200).json(findedUser)
-  })
-  .catch(next)
-}
+  User.findById(_id)
+    .then((findedUser) => {
+      if (!findedUser) {
+        throw new NotFoundError({ message: constants.errorMassages.notFound });
+      }
+      return res.status(200).json(findedUser);
+    })
+    .catch(next);
+};
+
+const patchUserInfo = (req, res, next) => {
+  const { _id } = req.user;
+
+  User.findByIdAndUpdate(
+    _id,
+    {
+      email: req.body.email,
+      name: req.body.name,
+      freeTime: req.body.freeTime,
+      preferedLocations: req.body.preferedLocations,
+      preferedInterests: req.body.preferedInterests,
+    },
+    { new: true, runValidators: true }
+  )
+    .then((updatedUser) => {
+      if (!updatedUser) {
+        throw new NotFoundError(constants.errorMassages.notFound);
+      }
+      return res.status(200).json(updatedUser);
+    })
+    .catch(next);
+};
+
+const getUsersInfo = (req, res, next) =>
+  User.find({})
+    .then((usersInfo) => {
+      return res.status(200).json(usersInfo);
+    })
+    .catch(next);
 
 module.exports = {
   signup,
   signin,
   signout,
+  getMyUserInfo,
+  patchUserInfo,
+  getUsersInfo
 };

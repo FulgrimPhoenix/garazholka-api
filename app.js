@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const mongoose = require("mongoose");
 const constants = require("./utils/constants");
 const { router } = require("./routes");
@@ -11,6 +12,7 @@ const { PORT = 3000, URL = constants.URLs.dbUrl } = process.env;
 
 app.use(bodyParser.json()); // для собирания JSON-формата
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser())
 
 mongoose
   .connect(URL)
